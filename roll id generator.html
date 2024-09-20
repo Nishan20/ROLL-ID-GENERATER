@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SID Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        @media (max-width: 1200px) {
+            input, button {
+                width: 50%;
+            }
+        }
+        @media (max-width: 768px) {
+            input, button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>SID Number Generator</h2>
+    <form id="roll-id-form">
+        <label for="enrollmentDate">Date of Enrollment:</label>
+        <input type="date" id="enrollmentDate" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="birthDate">Date of Birth:</label>
+        <input type="date" id="birthDate" required>
+
+        <button id="generate-btn">Generate Roll ID</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const generateBtn = document.getElementById('generate-btn');
+        generateBtn.addEventListener('click', generateRollId);
+
+        function generateRollId(event) {
+            event.preventDefault(); // Prevent form submission
+
+            try {
+                const enrollmentDate = document.getElementById('enrollmentDate').value;
+                const name = document.getElementById('name').value;
+                const birthDate = document.getElementById('birthDate').value;
+
+                console.log('Input values:', enrollmentDate, name, birthDate);
+
+                const enrollmentDateObj = new Date(enrollmentDate);
+                const birthDateObj = new Date(birthDate);
+
+                if (!enrollmentDateObj || !birthDateObj) {
+                    throw new Error('Invalid date format. Please use YYYY-MM-DD.');
+                }
+
+                const enrollmentYear = enrollmentDateObj.getFullYear().toString().slice(2);
+                const nameLetters = name.substring(0, 3).toUpperCase();
+                const birthDay = birthDateObj.getDate();
+                const birthMonth = birthDateObj.getMonth() + 1; // +1 because getMonth() returns 0-11
+                const birthYear = birthDateObj.getFullYear().toString().slice(2);
+
+                const rollId = 'SID' + enrollmentYear + nameLetters + birthDay + birthMonth + birthYear;
+                console.log('Roll ID:', rollId);
+
+                document.getElementById('result').innerHTML = 'Your SID is: ' + rollId;
+            } catch (error) {
+                console.error('Error:', error.message);
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
